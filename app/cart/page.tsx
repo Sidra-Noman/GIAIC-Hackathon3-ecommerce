@@ -1,97 +1,143 @@
-import React from 'react';
+"use client"
+
+import { Product } from '@/types/products';
+import React, { useEffect, useState } from 'react';
+import { getCartItems, removeFromCart, updateCartQuantity } from '../actions/actions';
+import Swal from 'sweetalert2';
+import { Result } from 'postcss';
+import { urlFor } from '@/sanity/lib/image';
 import Image from 'next/image';
-import Link from 'next/link';
+import { getItemKey } from 'sanity';
 
 export default function Cart() {
+  const [cartItems,setCartItems] =useState<Product[]>([]);
+
+  useEffect(() =>{
+    setCartItems(getCartItems())
+  },[]);
+
+  const handleRemove = (id:string) =>{
+    Swal.fire({
+      title :"Are you sure?",
+      text :"You will not be able recover this item!",
+      icon :"warning",
+      showCancelButton : true,
+      confirmButtonColor :"#3085d6",
+      cancelButtonColor :"#d35",
+      confirmButtonText :"Yes, remove it!"
+
+    }).then((Result) =>{
+      if(Result.isConfirmed){
+        removeFromCart(id)
+        setCartItems(getCartItems())
+        Swal.fire("Removed!","Item has been removed","success");
+      }
+    })
+  }
+  const handleQuantityChange = (id : string, quantity :number) =>{
+  updateCartQuantity(id,quantity);
+  setCartItems(getCartItems())
+  }
+
+
+  const handleIncrement = (id:string) =>{
+    const product = cartItems.find((item) => item._id === id);
+    if(product)
+      handleQuantityChange(id,product.inventory + 1)
+  }
+
+  const handleDecrement = (id:string) =>{
+    const product = cartItems.find((item) => item._id === id);
+    if(product && product.inventory > 1)
+      handleQuantityChange(id,product.inventory - 1)
+  }
+
+const caculatedTotal =() =>{
+  return cartItems.reduce((total,item) => total +item.price * item.inventory,0)
+}
+
+const handledProceed = (id:string) =>{
+  Swal.fire({
+    title :"Proceed to Checkout?",
+    text :"Please review your cart before checkout",
+    icon :"question",
+    showCancelButton : true,
+    confirmButtonColor : "#3085d6",
+    cancelButtonColor :"#d33",
+    confirmButtonText :"Yes, proceed!" 
+
+  }).then((result) =>{
+    if(result.isConfirmed){
+      Swal.fire("success","Your order has been successfully processed","success")
+      setCartItems([])
+    }
+  })
+}
+
   return (
-    <div className="min-h-screen flex items-center justify-center ">
-      <div className="max-w-5xl w-full p-4 sm:p-6">
-        {/* Bag Section */}
-        <div className="bg-gray-100 p-4 rounded-md mb-6">
-          <p className="font-medium text-sm">Free Delivery</p>
-          <span className="text-sm">
-            Applies to orders of ₹ 14,000.00 or more.
-          </span>
-          <span className="text-xs font-medium underline pl-2 cursor-pointer">
-            View details
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Bag Items */}
-          <div className="col-span-2">
-            <h2 className="text-lg sm:text-left text-center font-semibold mb-4">Bag</h2>
-
-            {/* Item 1 */}
-            <div className="flex flex-col sm:flex-row items-center sm:items-start justify-between border-b pb-4 mb-4">
+    <div className="container mx-auto p-4">
+    <h1 className="text-2xl font-bold mb-6 text-center">Shopping Cart</h1>
+    {cartItems.length > 0 ? (
+      <div className="grid gap-4">
+        {cartItems.map((item) => (
+          <div
+            key={item._id}
+            className="flex flex-col sm:flex-row items-center justify-between border p-4 rounded-lg shadow-lg"
+          >
+            <div className="flex flex-col items-center sm:items-start">
+              {item.image && (
               <Image
-                width={150}
-                height={150}
-                src="/images/man (1).png"
-                alt="Man"
-                className="rounded-md border"
+                src={urlFor(item.image).url()}
+                alt="image"
+                width={500}
+                height={500}
+                className="rounded-lg w-16 h-16 object-cover"
               />
-              <div className="ml-0 sm:ml-4 flex-1 mt-4 sm:mt-0 text-center sm:text-left">
-                <h3 className="font-medium text-gray-800">
-                  Nike Dri-FIT ADV TechKnit Ultra
-                </h3>
-                <p className="text-sm text-gray-600">
-                  Men&apos;s Short-Sleeve Running Top
-                </p>
-                <p className="text-sm text-gray-500">
-                  Ashen Slate/Cobalt Bliss
-                </p>
-                <p className="text-sm text-gray-500">Size: L</p>
+            )}
+              <h2 className="text-lg font-semibold">{item.productName}</h2>
+              <p className="text-gray-500">${item.price.toFixed(2)}</p>
+            
+            <div className="flex items-center space-x-2 mt-2">
+              <button
+                className="px-3 py-1 bg-gray-300 rounded-lg hover:bg-gray-400"
+                onClick={() => handleDecrement(item._id)}
+              >
+                -
+              </button>
+              <span className="px-4 py-2 border rounded-lg">{item.inventory}</span>
+              <button
+                className="px-3 py-1 bg-gray-300 rounded-lg hover:bg-gray-400"
+                onClick={() => handleIncrement(item._id)}
+              >
+                +
+              </button>
               </div>
             </div>
-
-            {/* Item 2 */}
-            <div className=" flex flex-col sm:flex-row items-center sm:items-start justify-between border-b pb-4 mb-4">
-              <div className='collapse '>
-              <Image
-                width={150}
-                height={150}
-                src="/images/shoes.png"
-                alt="Shoes"
-                className="rounded-md border "
-              />
-              </div>
-              <div className="ml-0 sm:ml-4 flex-1 mt-4 sm:mt-0 text-center sm:text-left">
-                <h3 className="font-medium text-gray-800">Nike Air Max 97 SE</h3>
-                <p className="text-sm text-gray-600">Men&apos;s Shoes</p>
-                <p className="text-sm text-gray-500">
-                  Flat Pewter/Light Bone/Black/White
-                </p>
-                <p className="text-sm text-gray-500">Size: 8</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Summary Section */}
-          <div className="bg-white rounded-lg p-6 shadow-md">
-            <h2 className="text-lg font-semibold mb-8">Summary</h2>
-            <div className="flex justify-between mb-4">
-              <p className="text-gray-600">Subtotal</p>
-              <p className="font-medium">₹ 20,890.00</p>
-            </div>
-            <div className="flex justify-between mb-4">
-              <p className="text-gray-600">
-                Estimated Delivery & Handling
-              </p>
-              <p className="font-medium">Free</p>
-            </div>
-            <div className="flex justify-between text-lg font-medium border-t pt-8">
-              <p>Total</p>
-              <p>₹ 20,890.00</p>
-            </div>
-            <Link href='/Checkout'>
-            <button className="w-full bg-black hover:bg-slate-500 text-white font-medium py-3 rounded-full mt-8">
-              Member Checkout
+            <button
+              className="px-4 py-2 mt-4 sm:mt-0 bg-red-500 text-white rounded-lg hover:bg-red-600"
+              onClick={() => handleRemove(item._id)}
+            >
+              Remove
             </button>
-            </Link>
           </div>
+        ))}
+        <div className="text-right font-bold text-xl mt-6">
+          Total: ${caculatedTotal().toFixed(2)}
+        </div>
+        <div className="flex justify-end mt-4">
+          <button
+            className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            onClick={() =>handledProceed}
+          >
+            Proceed to Checkout
+          </button>
         </div>
       </div>
-    </div>
-  );
+    ) : (
+      <p className="text-center text-gray-500">Your cart is empty.</p>
+    )}
+  </div>
+);
 }
+
+  
