@@ -12,7 +12,7 @@ const Gearup = () => {
         </h3>
 
         <div className="flex gap-2 mt-2 md:mt-0 pr-[58px]">
-          <p className="text-[14px] md:text-[15px] pt-1 md:pt-4 pr-2">Shop Men's</p>
+          <p className="text-[14px] md:text-[15px] pt-1 md:pt-4 pr-2">Shop Men&apos;s</p>
           <Image
             src="/images/Frame (1).png"
             alt="frame1"
@@ -32,7 +32,7 @@ const Gearup = () => {
 
 
         <div className="flex gap-2 mt-2 md:mt-0 pr-[58px]">
-          <p className="text-[14px] md:text-[15px] pt-1 md:pt-4 pr-2">Shop Women's</p>
+          <p className="text-[14px] md:text-[15px] pt-1 md:pt-4 pr-2">Shop Women&apos;s</p>
           <Image
             src="/images/Frame (1).png"
             alt="frame1"
@@ -71,7 +71,7 @@ const Gearup = () => {
             <p className="text-[14px] md:text-[15px] font-medium">₹ 3 895</p>
           </div>
           <p className="text-[14px] md:text-[15px] pt-2 text-[#757575] w-[180px]">
-          Men's Short-Sleeve Running Top
+          Men&apos;s Short-Sleeve Running Top
           </p>
         </div>
       
@@ -113,7 +113,7 @@ const Gearup = () => {
             <p className="text-[14px] md:text-[15px] font-medium">₹ 5 295</p>
           </div>
           <p className="text-[14px] md:text-[15px] pt-2 text-[#757575] w-[200px]">
-          Women's Long-Sleeve Running Top
+          Women&apos;s Long-Sleeve Running Top
           </p>
 
         </div>
@@ -133,7 +133,7 @@ const Gearup = () => {
             <p className="text-[14px] md:text-[15px] font-medium">₹ 3 795</p>
           </div>
           <p className="text-[14px] md:text-[15px] pt-2 text-[#757575] w-[220px]">
-          Women's Mid-Rise 7/8 Running Leggings with Pockets
+          Women&apos;s Mid-Rise 7/8 Running Leggings with Pockets
           </p>
         </div>
         
