@@ -93,7 +93,7 @@ const Gearup = () => {
             </p>
           </div>
           <p className="text-[14px] md:text-[15px] pt-2 text-[#757575] w-[240px]">
-          Men's 18cm (approx.) 2-in-1 Versatile Shorts
+          Men&apos;s 18cm (approx.) 2-in-1 Versatile Shorts
           </p>
         </div>
         

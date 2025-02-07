@@ -1,5 +1,4 @@
 import { Product } from "@/types/products";
-import { json } from "stream/consumers";
 
 export const addToCart = (product :Product) =>{
     const cart : Product[] = JSON.parse(localStorage.getItem('cart') || '[]')

@@ -9,6 +9,7 @@ import { urlFor } from '@/sanity/lib/image';
 import Image from 'next/image';
 import { getItemKey } from 'sanity';
 
+
 export default function Cart() {
   const [cartItems,setCartItems] =useState<Product[]>([]);
 
@@ -58,9 +59,9 @@ const caculatedTotal =() =>{
 
 const handledProceed = (id:string) =>{
   Swal.fire({
-    title :"Proceed to Checkout?",
-    text :"Please review your cart before checkout",
-    icon :"question",
+    title :"Processing  your order...",
+    text :"Please wait a moment",
+    icon :"info",
     showCancelButton : true,
     confirmButtonColor : "#3085d6",
     cancelButtonColor :"#d33",
@@ -68,8 +69,9 @@ const handledProceed = (id:string) =>{
 
   }).then((result) =>{
     if(result.isConfirmed){
-      Swal.fire("success","Your order has been successfully processed","success")
-      setCartItems([])
+      Swal.fire("success","Your order has been successfully processed","success");
+    
+      setCartItems([]);
     }
   })
 }
@@ -126,10 +128,10 @@ const handledProceed = (id:string) =>{
         </div>
         <div className="flex justify-end mt-4">
           <button
-            className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 w-full"
             onClick={() =>handledProceed}
           >
-            Proceed to Checkout
+            Proceed 
           </button>
         </div>
       </div>

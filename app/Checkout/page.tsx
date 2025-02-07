@@ -1,3 +1,4 @@
+
 import React from "react";
 import Image from "next/image";
 import { BsBagCheck } from "react-icons/bs";
@@ -455,3 +456,8 @@ const CheckoutPage = () => {
 };
 
 export default CheckoutPage;
+
+
+
+
+               
